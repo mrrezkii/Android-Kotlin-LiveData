@@ -3,6 +3,7 @@ package com.newbiexpert.android_kotlin_learnlivedata
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.newbiexpert.android_kotlin_learnlivedata.databinding.ActivityMainBinding
 
@@ -16,11 +17,13 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModelFactory = MainActivityViewModelFactory(225)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        binding.resultTextView.text = viewModel.getTotal().toString()
+
+        viewModel.totalData.observe(this, Observer {
+            binding.resultTextView.text = it.toString()
+        })
 
         binding.insertButton.setOnClickListener {
             viewModel.setTotal(binding.inputEditText.text.toString().toInt())
-            binding.resultTextView.text = viewModel.getTotal().toString()
         }
     }
 }
