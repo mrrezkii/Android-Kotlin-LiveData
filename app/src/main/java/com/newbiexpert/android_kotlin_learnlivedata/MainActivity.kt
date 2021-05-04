@@ -10,20 +10,18 @@ import com.newbiexpert.android_kotlin_learnlivedata.databinding.ActivityMainBind
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
-    private lateinit var viewModelFactory: MainActivityViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModelFactory = MainActivityViewModelFactory(225)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        viewModel.totalData.observe(this, Observer {
-            binding.resultTextView.text = it.toString()
+        viewModel.count.observe(this, Observer {
+            binding.countText.text = it.toString()
         })
 
-        binding.insertButton.setOnClickListener {
-            viewModel.setTotal(binding.inputEditText.text.toString().toInt())
+        binding.button.setOnClickListener {
+            viewModel.updateCount()
         }
     }
 }
